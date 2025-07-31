@@ -1,1 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExecutorHub - Executor Reviews & Safety</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: #0c0c0c;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #1a1a1a;
+            border-bottom: 1px solid #333;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4444;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff4444;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Filters Sidebar */
+        .filters-sidebar {
+            width: 280px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+            border: 1px solid #333;
+        }
+
+        .filters-title {
+            color: #ff4444;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-label {
+            color: #ff4444;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Level Filter */
+        .level-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .level-btn {
+            padding: 6px 12px;
+            border: 1px solid #333;
+            background: #222;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .level-btn.active {
+            background: #ff4444;
+            border-color: #ff4444;
+            color: white;
+        }
+
+        .level-slider {
+            margin: 15px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #ff4444;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .level-numbers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Checkboxes */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #ff4444;
+        }
+
+        .checkbox-item label {
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Price Filter */
+        .price-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .price-btn {
+            padding: 8px 16px;
+            border: 1px solid #333;
+            background: #222;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .price-btn.active {
+            background: #ff4444;
+            border-color: #ff4444;
+            color: white;
+        }
+
+        /* Sort Dropdown */
+        .sort-select {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid #333;
+            color: #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid #333;
+            color: #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #333;
+        }
+
+        /* Executors Grid */
+        .executors-content {
+            flex: 1;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .executors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .executor-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .executor-card:hover {
+            border-color: #ff4444;
+            transform: translateY(-2px);
+        }
+
+        /* Safety Level Indicators */
+        .safety-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .safety-high { background: linear-gradient(90deg, #22c55e, #16a34a); }
+        .safety-medium { background: linear-gradient(90deg, #eab308, #ca8a04); }
+        .safety-low { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+        .executor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .executor-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .executor-badges {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-verified {
+            background: #1e40af;
+            color: white;
+        }
+
+        .badge-premium {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #dc2626;
+            color: white;
+        }
+
+        .executor-description {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .executor-level {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .level-badge {
+            background: #333;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .last-updated {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .executor-features {
+            margin: 15px 0;
+        }
+
+        .features-title {
+            color: #22c55e;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-list {
+            list-style: none;
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .feature-list li {
+            margin-bottom: 3px;
+            padding-left: 10px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            color: #22c55e;
+            position: absolute;
+            left: 0;
+        }
+
+        .neutral-features {
+            color: #eab308;
+        }
+
+        .neutral-features .features-title {
+            color: #eab308;
+        }
+
+        .neutral-features li::before {
+            color: #eab308;
+        }
+
+        .executor-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #333;
+            background: #222;
+            color: #ccc;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background: #333;
+        }
+
+        .website-btn {
+            background: #1e40af;
+            border-color: #1e40af;
+            color: white;
+        }
+
+        .website-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .price-tag {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: #2a2a2a;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .price-free {
+            color: #22c55e;
+        }
+
+        .price-paid {
+            color: #eab308;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .filters-sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .executors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">ExecutorHub</a>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#">Executors</a></li>
+                        <li><a href="#">Reviews</a></li>
+                        <li><a href="#">Safety Guide</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <aside class="filters-sidebar">
+                <h3 class="filters-title">Filters</h3>
+                
+                <div class="filter-section">
+                    <span class="filter-label">• Level (Power)</span>
+                    <div class="level-buttons">
+                        <button class="level-btn active">ALL</button>
+                        <button class="level-btn">LEVEL 8</button>
+                    </div>
+                    <div class="level-slider">
+                        <input type="range" class="slider" min="0" max="8" value="8">
+                        <div class="level-numbers">
+                            <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                            <span>5</span><span>6</span><span>7</span><span>8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <span class="filter-label">• Platform</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="windows" checked>
+                            <label for="windows">Windows</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="macos">
+                            <label for="macos">macOS</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="android">
+                            <label for="android">Android</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ios">
+                            <label for="ios">iOS</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <span class="filter-label">• Price</span>
+                    <div class="price-buttons">
+                        <button class="price-btn active">All</button>
+                        <button class="price-btn">Free</button>
+                        <button class="price-btn">Paid</button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <span class="filter-label">• Show only</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="verified">
+                            <label for="verified">Verified</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="premium">
+                            <label for="premium">Premium</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="updated">
+                            <label for="updated">Updated</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keysystem">
+                            <label for="keysystem">Key system</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="external">
+                            <label for="external">External</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="executor">
+                            <label for="executor">Executor</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keyless">
+                            <label for="keyless">Keyless</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <span class="filter-label">• Sort by</span>
+                    <select class="sort-select">
+                        <option>Most Popular</option>
+                        <option>Newest</option>
+                        <option>Safety Level</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                    </select>
+                </div>
+
+                <button class="reset-btn">Reset Filters</button>
+            </aside>
+
+            <main class="executors-content">
+                <div class="results-header">
+                    <span>Showing <strong>20</strong> of <strong>26</strong> executors (1-20)</span>
+                </div>
+
+                <div class="executors-grid">
+                    <!-- Wave Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Wave</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                    <span class="badge badge-premium">👑 Premium</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">Amazing exploit with regular updates.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Reliable and stable</li>
+                                <li>Good script compatibility</li>
+                                <li>Level 8</li>
+                                <li>Large community</li>
+                            </ul>
+                            <div class="features-title neutral-features">⚪ Neutral</div>
+                            <ul class="feature-list neutral-features">
+                                <li>Has a keysystem</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- Solara Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Solara</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">A reliable and fast executor.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Fast execution</li>
+                                <li>Good stability</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- Fluxus Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Fluxus</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">Popular free executor with good features.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Good script support</li>
+                                <li>Regular updates</li>
+                                <li>Level 8</li>
+                            </ul>
+                            <div class="features-title neutral-features">⚪ Neutral</div>
+                            <ul class="feature-list neutral-features">
+                                <li>Has a keysystem</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- Oxygen U Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Oxygen U</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">Advanced executor with premium features.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Advanced features</li>
+                                <li>High compatibility</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-paid">💚 $9.99 monthly</div>
+                    </div>
+
+                    <!-- JJSploit Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-low"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">JJSploit</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-warning">⚠️ Warning</span>
+                                </div>
+                            </div>
+                            <div>⚠️</div>
+                        </div>
+                        <p class="executor-description">Basic free executor for beginners.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 2</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Easy to use</li>
+                                <li>Free</li>
+                            </ul>
+                            <div class="features-title neutral-features">⚪ Neutral</div>
+                            <ul class="feature-list neutral-features">
+                                <li>Limited features</li>
+                                <li>Lower level</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- Nihon Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Nihon</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">High-quality executor with advanced features.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Excellent performance</li>
+                                <li>Good script compatibility</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-paid">💚 $4.99 monthly</div>
+                    </div>
+
+                    <!-- Synapse Z Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Synapse Z</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                    <span class="badge badge-premium">👑 Premium</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">Premium executor with top-tier features.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Premium quality</li>
+                                <li>Excellent support</li>
+                                <li>Level 8</li>
+                                <li>Best-in-class features</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-paid">💚 $15.00 monthly</div>
+                    </div>
+
+                    <!-- Electron Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-medium"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Electron</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>⚡</div>
+                        </div>
+                        <p class="executor-description">Cross-platform executor with good performance.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 7</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Cross-platform</li>
+                                <li>Good performance</li>
+                                <li>Regular updates</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- ScriptWare Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">ScriptWare</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                    <span class="badge badge-premium">👑 Premium</span>
+                                </div>
+                            </div>
+                            <div>🔥 💻</div>
+                        </div>
+                        <p class="executor-description">Professional-grade executor for advanced users.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Professional features</li>
+                                <li>Excellent stability</li>
+                                <li>Level 8</li>
+                                <li>Advanced debugging</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-paid">💚 $20.00 one-time</div>
+                    </div>
+
+                    <!-- Celery Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-medium"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Celery</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>🥬</div>
+                        </div>
+                        <p class="executor-description">Simple and effective free executor.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 6</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Easy to use</li>
+                                <li>Lightweight</li>
+                                <li>Free</li>
+                            </ul>
+                            <div class="features-title neutral-features">⚪ Neutral</div>
+                            <ul class="feature-list neutral-features">
+                                <li>Limited to Level 6</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- Seliware Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Seliware</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">High-performance executor with good features.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>High performance</li>
+                                <li>Good script support</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-paid">💚 $7.99 monthly</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Level buttons
+            const levelButtons = document.querySelectorAll('.level-btn');
+            levelButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    levelButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Price buttons
+            const priceButtons = document.querySelectorAll('.price-btn');
+            priceButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    priceButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Level slider
+            const slider = document.querySelector('.slider');
+            slider.addEventListener('input', function() {
+                console.log('Level selected:', this.value);
+            });
+
+            // Checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    console.log(this.id + ':', this.checked);
+                });
+            });
+
+            // Sort dropdown
+            const sortSelect = document.querySelector('.sort-select');
+            sortSelect.addEventListener('change', function() {
+                console.log('Sort by:', this.value);
+            });
+
+            // Reset filters
+            const resetBtn = document.querySelector('.reset-btn');
+            resetBtn.addEventListener('click', function() {
+                // Reset level buttons
+                levelButtons.forEach(b => b.classList.remove('active'));
+                levelButtons[0].classList.add('active');
+                
+                // Reset price buttons
+                priceButtons.forEach(b => b.classList.remove('active'));
+                priceButtons[0].classList.add('active');
+                
+                // Reset slider
+                slider.value = 8;
+                
+                // Reset checkboxes
+                checkboxes.forEach(cb => {
+                    if (cb.id === 'windows') {
+                        cb.checked = true;
+                    } else {
+                        cb.checked = false;
+                    }
+                });
+                
+                // Reset sort
+                sortSelect.value = 'Most Popular';
+            });
+
+            // Card hover effects
+            const cards = document.querySelectorAll('.executor-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 8px 25px rgba(255, 68, 68, 0.15)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Action button clicks
+            const actionBtns = document.querySelectorAll('.action-btn');
+            actionBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (this.textContent.includes('Website')) {
+                        alert('Opening website...');
+                    } else if (this.textContent.includes('UNC')) {
+                        alert('Opening UNC compatibility info...');
+                    } else if (this.textContent.includes('ℹ️')) {
+                        alert('Opening detailed information...');
+                    }
+                });
+            });
+        });
+
+        // Search functionality (if you want to add a search bar later)
+        function filterExecutors(searchTerm) {
+            const cards = document.querySelectorAll('.executor-card');
+            cards.forEach(card => {
+                const name = card.querySelector('.executor-name').textContent.toLowerCase();
+                const description = card.querySelector('.executor-description').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm.toLowerCase()) || description.includes(searchTerm.toLowerCase())) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Mobile menu toggle (if needed)
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('mobile-active');
+        }
+    </script>
+
+    <style>
+        /* Additional mobile styles */
+        @media (max-width: 768px) {
+            .nav-links.mobile-active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #1a1a1a;
+                padding: 20px;
+                border-top: 1px solid #333;
+            }
+            
+            .executor-card {
+                margin-bottom: 15px;
+            }
+            
+            .executor-actions {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                margin-bottom: 5px;
+            }
+        }
+
+        /* Loading animation for cards */
+        @keyframes cardLoad {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .executor-card {
+            animation: cardLoad 0.5s ease-out;
+        }
+
+        .executor-card:nth-child(1) { animation-delay: 0.1s; }
+        .executor-card:nth-child(2) { animation-delay: 0.2s; }
+        .executor-card:nth-child(3) { animation-delay: 0.3s; }
+        .executor-card:nth-child(4) { animation-delay: 0.4s; }
+        .executor-card:nth-child(5) { animation-delay: 0.5s; }
+        .executor-card:nth-child(6) { animation-delay: 0.6s; }
+        .executor-card:nth-child(7) { animation-delay: 0.7s; }
+        .executor-card:nth-child(8) { animation-delay: 0.8s; }
+        .executor-card:nth-child(9) { animation-delay: 0.9s; }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+    </style>
+                            <ul class="feature-list">
+                                <li>Has a decompiler</li>
+                                <li>100% sUNC</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 $7.49 weekly</div>
+                    </div>
+
+                    <!-- Zenith Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Zenith</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                    <span class="badge badge-premium">👑 Premium</span>
+                                </div>
+                            </div>
+                            <div>🔥</div>
+                        </div>
+                        <p class="executor-description">The best overall value exploit.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Has a decompiler</li>
+                                <li>100% sUNC</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 $6.49 weekly</div>
+                    </div>
+
+                    <!-- Arceus X -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-low"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Arceus X</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-warning">⚠️ Warning</span>
+                                </div>
+                            </div>
+                            <div>📱 ☁️ 🔧</div>
+                        </div>
+                        <p class="executor-description">A long-standing mobile exploit.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>VNG Support</li>
+                                <li>98% UNC</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-free">💚 $7.49 monthly</div>
+                    </div>
+
+                    <!-- Bunni Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-medium"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Bunni</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>🔥 📱 🔧</div>
+                        </div>
+                        <p class="executor-description">The free Level 8 exploit to use.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Has a decompiler</li>
+                                <li>100% sUNC</li>
+                                <li>Level 8</li>
+                            </ul>
+                            <div class="features-title neutral-features">⚪ Neutral</div>
+                            <ul class="feature-list neutral-features">
+                                <li>Has a keysystem</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="executor-actions" style="margin-top: 10px;">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                        </div>
+                    </div>
+
+                    <!-- CodeX Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">CodeX</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>📱 ☁️ 🔧</div>
+                        </div>
+                        <p class="executor-description">A powerful exploit with advanced features.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>98% UNC</li>
+                                <li>Level 8</li>
+                            </ul>
+                            <div class="features-title neutral-features">⚪ Neutral</div>
+                            <ul class="feature-list neutral-features">
+                                <li>Has a keysystem</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-paid">💚 $4.97 monthly</div>
+                    </div>
+
+                    <!-- Cryptic Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Cryptic</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>📱 ☁️ 🔧</div>
+                        </div>
+                        <p class="executor-description">An exploit for most platforms.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Almost on all platforms</li>
+                                <li>Has a decompiler</li>
+                                <li>100% sUNC</li>
+                                <li>Level 8</li>
+                            </ul>
+                            <div class="features-title neutral-features">⚪ Neutral</div>
+                            <ul class="feature-list neutral-features">
+                                <li>Has a keysystem</li>
+                            </ul>
+                        </div>
+                        <div class="executor-actions">
+                            <a href="#" class="action-btn website-btn">Website 🔗</a>
+                            <a href="#" class="action-btn">UNC 💻</a>
+                            <a href="#" class="action-btn">ℹ️</a>
+                        </div>
+                        <div class="price-tag price-paid">💚 $4.99 monthly</div>
+                    </div>
+
+                    <!-- Delta Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-medium"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Delta</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>📱 ☁️ 🔧</div>
+                        </div>
+                        <p class="executor-description">A powerful multi-platform exploit.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by imveryhappy</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>Multi-platform support</li>
+                                <li>Regular updates</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- Hydrogen Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-medium"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">Hydrogen</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>📊 🔧</div>
+                        </div>
+                        <p class="executor-description">A free macOS Exploit</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
+                            <ul class="feature-list">
+                                <li>macOS compatibility</li>
+                                <li>Free to use</li>
+                                <li>Level 8</li>
+                            </ul>
+                        </div>
+                        <div class="price-tag price-free">💚 Free</div>
+                    </div>
+
+                    <!-- KRNL Executor -->
+                    <div class="executor-card">
+                        <div class="safety-indicator safety-high"></div>
+                        <div class="executor-header">
+                            <div>
+                                <h3 class="executor-name">KRNL</h3>
+                                <div class="executor-badges">
+                                    <span class="badge badge-verified">✓ Verified</span>
+                                </div>
+                            </div>
+                            <div>☁️ 📱 🔧</div>
+                        </div>
+                        <p class="executor-description">A popular free exploit with good performance.</p>
+                        <div class="executor-level">
+                            <span class="level-badge">Level 8</span>
+                            <span class="last-updated">Last edited by voxlis.NET</span>
+                        </div>
+                        <div class="executor-features">
+                            <div class="features-title">+ Pros</div>
